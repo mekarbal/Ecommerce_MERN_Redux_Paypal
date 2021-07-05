@@ -6,17 +6,23 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "transactions",
     },
-    name: {
-      type: String,
+    products: [],
+
+    totalPrice: {
+      type: Number,
       required: true,
     },
-    slug: {
-      type: String,
+    id_user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+    address: {
+      type: Object,
       required: true,
     },
-    image: {
-      type: String,
-      required: true,
+    isLivred: {
+      type: Boolean,
+      default: false,
     },
   },
   {

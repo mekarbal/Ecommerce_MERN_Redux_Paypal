@@ -10,7 +10,12 @@ import StepsCheckout from "../components/StepsCheckout";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 const PayementMethodsScreen = ({ history }) => {
-  const [payementMethod, setPayementMethod] = useState({});
+  const [payementMethod, setPayementMethod] = useState([
+    {
+      name: "",
+      _id: "",
+    },
+  ]);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
@@ -38,20 +43,21 @@ const PayementMethodsScreen = ({ history }) => {
       {error && <Message variant="danger">{error}</Message>}
       <FormLabel as="legend">Select Method</FormLabel>
       <Form onSubmit={submitHandler}>
-        {payementMethods.map((itemMethod) => (
-          <FormGroup key={itemMethod._id}>
-            <Col>
-              <Form.Check
-                type="radio"
-                label={itemMethod.name}
-                id={itemMethod.name}
-                name={itemMethod.name}
-                value={itemMethod}
-                onChange={(e) => setPayementMethod(itemMethod)}
-              ></Form.Check>
-            </Col>
-          </FormGroup>
-        ))}
+        {payementMethods &&
+          payementMethods.map((itemMethod) => (
+            <FormGroup key={itemMethod._id}>
+              <Col>
+                <Form.Check
+                  type="radio"
+                  label={itemMethod.name}
+                  id={itemMethod.name}
+                  name={itemMethod.name}
+                  value={itemMethod}
+                  onChange={(e) => setPayementMethod(itemMethod)}
+                ></Form.Check>
+              </Col>
+            </FormGroup>
+          ))}
 
         <Button type="submit" variant="primary">
           Continue

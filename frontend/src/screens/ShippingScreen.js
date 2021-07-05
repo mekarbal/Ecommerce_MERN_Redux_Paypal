@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
@@ -8,6 +8,8 @@ const ShippingScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
@@ -22,6 +24,9 @@ const ShippingScreen = ({ history }) => {
     );
     history.push("/payement");
   };
+  useEffect(() => {
+    if (!userInfo) history.push("/login");
+  }, [userInfo, history]);
   return (
     <FormContainer>
       <StepsCheckout step1 step2 />

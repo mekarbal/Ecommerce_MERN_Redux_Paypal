@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 
 import { useSelector, useDispatch } from "react-redux";
+import {Link} from "react-router-dom";
 import { listProductsBySubCat } from "../actions/productActions";
 import { listSubCategories } from "../actions/subCategoryActions";
 import ProductBySubCat from "../screens/ProductBySubCat";
 import Loader from "./Loader";
+import Message from "./Message";
+
 const SubCategory = ({ match }) => {
   const dispatch = useDispatch();
   const subCategoryList = useSelector((state) => state.subCategoryList);
@@ -35,6 +38,7 @@ const SubCategory = ({ match }) => {
             style={{
               border: "1px solid #7b8a8b",
             }}
+            className="mb-5"
           >
             {subcategories.map((sub) => (
               <Col sm={12} md={6} lg={4} xl={3} key={sub._id}>
@@ -54,7 +58,7 @@ const SubCategory = ({ match }) => {
             ))}
           </Row>
 
-          {productsbySub && (
+          {productsbySub && productsbySub.length > 0 ? (
             <>
               <h1>Latest products</h1>
               <Row>
@@ -65,6 +69,11 @@ const SubCategory = ({ match }) => {
                 ))}
               </Row>
             </>
+          ) : (
+            <Message variant="danger" className="mt-5">
+              There is no such product for this category{" "}
+              <Link to="/"> Go Back</Link>
+            </Message>
           )}
         </>
       )}

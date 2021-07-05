@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar, Nav, Container, NavDropdown, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions";
+import { useHistory } from "react-router-dom";
+
 const Header = () => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  useEffect(() => {
+    userInfo && userInfo.id_role.name === "admin" && history.push("/admin");
+    userInfo &&
+      userInfo.id_role.name === "delivery" &&
+      history.push("/delivery");
+  }, [history]);
 
   const logoutHandler = () => {
     dispatch(logout());

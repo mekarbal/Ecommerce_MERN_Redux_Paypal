@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Row,
@@ -8,16 +8,20 @@ import {
   Card,
   ListGroupItem,
 } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import StepsCheckout from "../components/StepsCheckout";
-const PlaceOrderScreen = () => {
+import { transactionRegister } from "../actions/transactionActions";
+import PayPalPayement from "../components/PaypalPayement";
+import { orderRegister } from "../actions/orderActions";
+const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
-
+  const [id, setId] = useState("");
   const methodsList = useSelector((state) => state.methodsList);
+  const { transaction } = useSelector((state) => state.transaction);
+  const transactionsaved = transaction;
 
   const addDecimatAfterPoint = (number) => {
     return (Math.round(number * 100) / 100).toFixed(2);
@@ -37,8 +41,49 @@ const PlaceOrderScreen = () => {
     Number(shippingPrice) +
     Number(tax)
   ).toFixed(2);
-  const placeOrderHandler = () => {
-    console.log("order");
+
+  useEffect(() => {
+    transactionsaved && setId(transactionsaved.transactionsaved._id);
+    id && console.log(id);
+  }, [id]);
+  id && console.log(id);
+  const placeOrderHandler = async () => {
+    id && console.log(id);
+
+    dispatch(transactionRegister("PAY_ID")).then(() => {
+      dispatch(
+        orderRegister(
+          [
+            {
+              product: "6059e75c9874fb2228f8e94c",
+              name: "Acer Gamer",
+              image: ["acer-aspire-gx-781-gaming-pc.jpg"],
+              price: 1222,
+              countInStock: 12,
+              qty: 1,
+            },
+            {
+              product: "6059e75c9874fb2228f8e94c",
+              name: "Acer Gamer",
+              image: ["acer-aspire-gx-781-gaming-pc.jpg"],
+              price: 1222,
+              countInStock: 12,
+              qty: 1,
+            },
+          ],
+          12333,
+          "6059e75c9874fb2228f8e941",
+          {
+            address: "N 145 block 6 quartier riyad",
+            city: "Safi",
+            country: "Maroc",
+            phone: "0697802293",
+            postalCode: "46000",
+          },
+          "SUCCESS"
+        )
+      );
+    });
   };
   return (
     <>
@@ -136,6 +181,7 @@ const PlaceOrderScreen = () => {
                   {" "}
                   Place Order
                 </Button>
+                <PayPalPayement totalPrice={totalPrice} />
               </ListGroupItem>
             </ListGroup>
           </Card>

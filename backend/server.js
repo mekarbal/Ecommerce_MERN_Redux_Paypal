@@ -7,7 +7,9 @@ const categoryRouter = require("./routes/categoryRouter");
 const ssCategoryRouter = require("./routes/sousCategoryRouter");
 const roleRouter = require("./routes/roleRouter");
 const userRouter = require("./routes/userRouter");
-const payementMethodRouter = require("./routes/payementMethodRouter")
+const payementMethodRouter = require("./routes/payementMethodRouter");
+const orderRouter = require("./routes/orderRouter");
+const transactionRouter = require("./routes/transactionRouter");
 const db = require("./config/database");
 
 app.use(express.json());
@@ -33,7 +35,9 @@ app.use("/category", categoryRouter);
 app.use("/ssCategory", ssCategoryRouter);
 app.use("/role", roleRouter);
 app.use("/user", userRouter);
-app.use('/payementMethod',payementMethodRouter)
+app.use("/payementMethod", payementMethodRouter);
+app.use("/order", orderRouter);
+app.use("/transaction", transactionRouter);
 app.listen(process.env.PORT, () =>
   console.log("connected to server" + process.env.PORT)
 );

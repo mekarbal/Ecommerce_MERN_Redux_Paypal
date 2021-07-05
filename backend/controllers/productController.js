@@ -16,7 +16,7 @@ exports.productRegister = async (req, res, next) => {
   const file = req.files.file;
 
   file.mv(`${__dirname}/../../frontend/public/images/${file.name}`, (err) => {
-    if (err) {
+    if (err) { 
       console.log(err);
       res.status(400).send({ message: err.message });
     }
