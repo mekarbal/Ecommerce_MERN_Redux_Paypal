@@ -13,11 +13,18 @@ const App = () => {
       <Route path="/register" component={UserSide} exact></Route>
       <Route path="/profile" component={UserSide} exact></Route>
       <Route path="/" component={UserSide} exact></Route>
+      <Route path="/search/:keyword" component={UserSide} exact></Route>
+      <Route path="/page/:pageNumber" component={UserSide} exact></Route>
+      <Route
+        path="/search/:keyword/page/:pageNumber"
+        component={UserSide}
+        exact
+      ></Route>
       <Route path="/product/:id" component={UserSide}></Route>
       <Route path="/subcat/:id" component={UserSide}></Route>
       <Route path="/cart/:id?" component={UserSide}></Route>
       <Route path="/admin" component={AdminSide} exact></Route>
-      <Route path="/admin/products" component={AdminSide}></Route>
+      <Route path="/admin/users" component={AdminSide}></Route>
       <Route path="/delivery" component={DeliverySide} exact></Route>
     </Router>
   );

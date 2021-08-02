@@ -6,21 +6,22 @@ import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import { listCategories } from "../actions/categoryActions";
 import Category from "../components/Category";
-const HomeScreen = () => {
+import Paginate from "../components/Paginate";
+const HomeScreen = ({ match }) => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const { loading, products, error, page, pages } = productList;
 
   const categoryList = useSelector((state) => state.categoryList);
   const { categories } = categoryList;
 
-  
+  const keyword = match.params.keyword;
+  const pageNumber = match.params.pageNumber || 1;
 
   useEffect(() => {
-    dispatch(listProducts);
+    dispatch(listProducts(keyword, pageNumber));
     dispatch(listCategories);
-  }, [dispatch]);
-
+  }, [dispatch, keyword, pageNumber]);
   return (
     <>
       {loading ? (
@@ -40,11 +41,12 @@ const HomeScreen = () => {
           <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (
-              <Col sm={12} md={6} lg={4} xl={3} key={product._id} >
+              <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
                 <Product product={product} />
               </Col>
             ))}
           </Row>
+          <Paginate pages={pages} page={page} keyword={keyword} />
         </>
       )}
     </>

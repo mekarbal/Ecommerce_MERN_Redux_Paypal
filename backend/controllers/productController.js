@@ -1,9 +1,23 @@
 const Product = require("../models/product");
 
 exports.getAllproduct = async (req, res, next) => {
+  const pageSize = 2;
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
   try {
-    const product = await Product.find();
-    res.json(product);
+    const count = await Product.countDocuments({ ...keyword });
+    const products = await Product.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -16,7 +30,7 @@ exports.productRegister = async (req, res, next) => {
   const file = req.files.file;
 
   file.mv(`${__dirname}/../../frontend/public/images/${file.name}`, (err) => {
-    if (err) { 
+    if (err) {
       console.log(err);
       res.status(400).send({ message: err.message });
     }

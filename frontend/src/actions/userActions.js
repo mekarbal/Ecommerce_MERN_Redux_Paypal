@@ -1,5 +1,11 @@
 import axios from "axios";
 import {
+  USERS_LIST_FAIL,
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -53,45 +59,44 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-export const register = (name, address, email, password) => async (
-  dispatch
-) => {
-  try {
-    dispatch({
-      type: USER_REGISTER_REQUEST,
-    });
+export const register =
+  (name, address, email, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const { data } = await axios.post(
-      "http://localhost:5000/user/",
-      { name, address, email, password },
-      config
-    );
+      const { data } = await axios.post(
+        "http://localhost:5000/user/",
+        { name, address, email, password },
+        config
+      );
 
-    dispatch({
-      type: USER_REGISTER_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
 
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 //get User Details
 export const getUserDetails = (id) => async (dispatch, getState) => {
@@ -122,12 +127,15 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
-      payload: error,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
 
-//get User Details
+//update User
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -158,6 +166,75 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       payload: error,
+    });
+  }
+};
+
+//get All users
+export const getUsersList = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USERS_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`http://localhost:5000/user/`, config);
+
+    dispatch({
+      type: USERS_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USERS_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://localhost:5000/user/${id}`,
+      config
+    );
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

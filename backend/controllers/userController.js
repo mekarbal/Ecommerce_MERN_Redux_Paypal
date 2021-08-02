@@ -4,8 +4,8 @@ const { generateToken } = require("../middlewares/generateToken");
 const Role = require("../models/role");
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const user = await User.find();
-    res.json(user);
+    const users = await User.find();
+    res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -18,7 +18,7 @@ exports.userRegister = async (req, res, next) => {
   const roles = await getAllRoles();
   let userRole = "";
   roles.map((user) => {
-    if (user.name === "user") {
+    if (user.name === "delivery") {
       userRole = user._id;
     }
   });
@@ -26,7 +26,7 @@ exports.userRegister = async (req, res, next) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
   const user = new User({
-    id_role: userRole,
+    id_role: userRole || "user",
     name: req.body.name,
     address: req.body.address,
     email: req.body.email,
@@ -50,9 +50,10 @@ exports.userRegister = async (req, res, next) => {
 };
 
 exports.UserDelete = async (req, res, next) => {
+  console.log(req.params.id)
   try {
     const userDeleted = await User.deleteOne({
-      _id: req.body._iduser,
+      _id: req.params.id,
     });
     res.send(userDeleted);
   } catch (error) {
@@ -149,7 +150,7 @@ async function getAllRoles() {
 }
 
 exports.getUserById = async (req, res) => {
-  const user = await User.findById(req.body.id).select("-password");
+  const user = await User.findById(req.params.id).select("-password");
 
   if (user) {
     res.json(user);

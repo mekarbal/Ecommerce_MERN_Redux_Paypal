@@ -1,4 +1,10 @@
 import {
+  USERS_LIST_FAIL,
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -67,6 +73,38 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_UPDATE_PROFILE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const usersListReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case USERS_LIST_REQUEST:
+      return { loading: true, users: [] };
+    case USERS_LIST_SUCCESS:
+      return {
+        loading: false,
+        users: action.payload,
+      };
+    case USERS_LIST_FAIL:
+      return { loading: true, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case USER_DELETE_REQUEST:
+      return { loading: true };
+    case USER_DELETE_SUCCESS:
+      return {
+        loading: false,
+        user: action.payload,
+      };
+    case USER_DELETE_FAIL:
+      return { loading: true, error: action.payload };
     default:
       return state;
   }

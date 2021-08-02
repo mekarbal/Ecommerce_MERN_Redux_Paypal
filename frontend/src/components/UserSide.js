@@ -31,6 +31,13 @@ const UserSide = () => {
           <Route path="/register" component={RegisterScreen} exact></Route>
           <Route path="/profile" component={ProfileScreen} exact></Route>
           <Route path="/" component={HomeScreen} exact></Route>
+          <Route path="/search/:keyword" component={HomeScreen} exact></Route>
+          <Route path="/page/:pageNumber" component={HomeScreen} exact></Route>
+          <Route
+            path="/search/:keyword/page/:pageNumber"
+            component={HomeScreen}
+            exact
+          ></Route>
           <Route path="/product/:id" component={ProductScreen}></Route>
           <Route path="/subcat/:id" component={SubCategory}></Route>
           <Route path="/cart/:id?" component={CartScreen}></Route>
