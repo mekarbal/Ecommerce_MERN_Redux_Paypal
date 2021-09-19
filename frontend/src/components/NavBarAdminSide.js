@@ -8,8 +8,16 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 import { NavLink } from "react-router-dom";
-
+import { logout } from "../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 const NavBarAdminSide = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const logoutHandler = () => {
+    dispatch(logout());
+    history.push("/");
+  };
   return (
     <>
       <div
@@ -53,7 +61,9 @@ const NavBarAdminSide = () => {
             </CDBSidebarMenu>
           </CDBSidebarContent>
 
-          <CDBSidebarMenuItem icon="chart-line">Logout</CDBSidebarMenuItem>
+          <CDBSidebarMenuItem icon="chart-line" onClick={logoutHandler}>
+            Logout
+          </CDBSidebarMenuItem>
           <CDBSidebarFooter style={{ textAlign: "center" }}>
             <div
               style={{
