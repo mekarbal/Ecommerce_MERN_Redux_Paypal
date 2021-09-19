@@ -38,6 +38,6 @@ app.use("/user", userRouter);
 app.use("/payementMethod", payementMethodRouter);
 app.use("/order", orderRouter);
 app.use("/transaction", transactionRouter);
-app.listen(process.env.PORT, () =>
-  console.log("connected to server" + process.env.PORT)
+app.listen(process.env.PORT || 5000, () =>
+  console.log("connected to server" + process.env.PORT || 5000)
 );
