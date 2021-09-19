@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const fileUpload = require("express-fileupload");
-require("dotenv").config();
+// require("dotenv").config();
 const productRouter = require("./routes/productRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const ssCategoryRouter = require("./routes/sousCategoryRouter");
