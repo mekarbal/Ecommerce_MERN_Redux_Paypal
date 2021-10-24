@@ -32,16 +32,16 @@ const NavBarAdminSide = () => {
 
           <CDBSidebarContent className="sidebar-content">
             <CDBSidebarMenu>
-              <NavLink exact to="/admin">
+              <NavLink exact to="/admin" activeClassName="activeClicked">
                 <CDBSidebarMenuItem icon="columns">
                   Dashboard
                 </CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/admin/users">
+              <NavLink exact to="/admin/users" activeClassName="activeClicked">
                 <CDBSidebarMenuItem icon="table">Users</CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/users" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="user">Users</CDBSidebarMenuItem>
+              <NavLink exact to="/admin/orders" activeClassName="activeClicked">
+                <CDBSidebarMenuItem icon="user">Orders</CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/analytics" activeClassName="activeClicked">
                 <CDBSidebarMenuItem icon="chart-line">

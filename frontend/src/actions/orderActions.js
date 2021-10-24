@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  GET_ORDERS_FAIL,
+  GET_ORDERS_REQUEST,
+  GET_ORDERS_SUCCESS,
   ORDERS_ADD_FAIL,
   ORDERS_ADD_REQUEST,
   ORDERS_ADD_SUCCESS,
@@ -49,3 +52,30 @@ export const orderRegister =
       });
     }
   };
+export const getAllorders = () => async (dispatch) => {
+  try {
+    await dispatch({
+      type: GET_ORDERS_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.get("http://localhost:5000/order/", config);
+
+    await dispatch({
+      type: GET_ORDERS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ORDERS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

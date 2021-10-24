@@ -26,6 +26,7 @@ const App = () => {
       <Route path="/admin" component={AdminSide} exact></Route>
       <Route path="/admin/users" component={AdminSide}></Route>
       <Route path="/delivery" component={DeliverySide} exact></Route>
+      <Route path="/admin/orders" component={AdminSide} exact></Route>
     </Router>
   );
 };
